@@ -1,0 +1,399 @@
+
+package sanke;
+
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+public class panel extends javax.swing.JFrame {
+
+    ArrayList<String> historial = new ArrayList<>();
+    //jlabel -> botones, txt
+    JLabel[][] cuadriculaJuego;
+    
+    String direccion = "der";
+
+    // hilos 
+    private Thread hiloRepintar;
+
+    //borde del tablero
+    int izquierda = 0;
+    int derecha = 10;
+
+    //
+    int x = 1;
+    int y = 1;
+
+    //posicion inical del snake
+    int snakex = 5;
+    int snakey = 5;
+
+    //fruta
+    int frutax = 1;
+    int frutay = 1;
+
+    // velocidad del sanke
+    int velocidad = 1000;
+
+    int contadorfrutas = 0;
+
+    /**
+     * Creates new form panel
+     */
+    public panel() {
+        initComponents();
+        snakeGame();
+    }
+
+    public void snakeGame() {
+
+        // visibilidad del panel
+        this.jPanel1.setVisible(true);
+
+        //matriz del juego
+        cuadriculaJuego = new JLabel[10][10];
+
+        // un doble for para manejar la matriz
+        for (int i = 0; i < cuadriculaJuego.length; i++) {
+            for (int j = 0; j < cuadriculaJuego.length; j++) {
+
+                //poder crear un label en esa poscion
+                cuadriculaJuego[i][j] = new JLabel();
+                cuadriculaJuego[i][j].setOpaque(true);
+
+                cuadriculaJuego[i][j].setBackground(Color.white);
+
+                // posicion x y posicion y
+                // tamanio de cada cuadro
+                cuadriculaJuego[i][j].setBounds(x, y, 50, 50);
+
+                x = x + 51;
+                this.jPanel1.add(cuadriculaJuego[i][j]);
+            }
+            y = y + 51;
+            x = 1;
+        }
+
+        // pintar el snake
+        cuadriculaJuego[snakex][snakey].setBackground(Color.red);
+
+        // 1,1 de color verde
+        cuadriculaJuego[frutax][frutay].setBackground(Color.green);
+
+        //arranque del hilo
+    }
+
+    // funcion de mover el snake
+    public void mover() {
+        while (true) {
+            this.requestFocus(true);
+            if (this.direccion.equals("arr")) {
+                snakex--;
+                //pintar
+                cuadriculaJuego[snakex][snakey].setBackground(Color.red);
+                //despintar
+                cuadriculaJuego[snakex+1][snakey].setBackground(Color.white);
+            } else if (this.direccion.equals("aba")) {
+                snakex++;
+                //pintar
+                cuadriculaJuego[snakex][snakey].setBackground(Color.red);
+                //despintar
+                cuadriculaJuego[snakex-1][snakey].setBackground(Color.white);
+            } else if (this.direccion.equals("der")) {
+                snakey++;
+                //pintar
+                cuadriculaJuego[snakex][snakey].setBackground(Color.red);
+                //despintar
+                cuadriculaJuego[snakex][snakey - 1].setBackground(Color.white);
+            } else if (this.direccion.equals("izq")) {
+                snakey--;
+                //pintar
+                cuadriculaJuego[snakex][snakey].setBackground(Color.red);
+                //despintar
+                cuadriculaJuego[snakex][snakey + 1].setBackground(Color.white);
+            }
+
+            
+            for (int i = 0; i < cuadriculaJuego.length; i++) {
+                for (int j = 0; j < cuadriculaJuego.length; j++) {
+                    if (cuadriculaJuego[i][9]==cuadriculaJuego[snakex][snakey] || cuadriculaJuego[j][9]==cuadriculaJuego[snakex][snakey]) {
+                        JOptionPane.showMessageDialog(null, "Hubo un choque");
+                        break;
+                    }
+                    break;
+                }
+                
+            }
+            // if 
+            // el movimiento del snake
+            // if el boton derecha se prociono snakey --;
+            // el boton de hacia arriba fue procionad snakex --;
+            //otro if para el choque
+//            if ( cuadriculaJuego[snakex][snakey] || || ||){
+//                System.out.println("hubo un choque");
+//            }
+            //if contarfutas >0
+            // velocidad = velocidad - 0.30
+            // if cuadriculaJuego[snakex][snakey] == cuadriculaJuego[frutax][frutay]
+            // cuadriculaJuego[frutax][frutay]. colro blanco
+            //velocidad es una espera 
+            try {
+                Thread.sleep(velocidad);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(panel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public void avanzar() {
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        btt_Izquierda = new javax.swing.JButton();
+        btt_Arriba = new javax.swing.JButton();
+        btt_Abajo = new javax.swing.JButton();
+        btt_Derecha = new javax.swing.JButton();
+        btt_Historial = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 501, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 506, Short.MAX_VALUE)
+        );
+
+        jButton1.setBackground(new java.awt.Color(153, 204, 255));
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText("Iniciar");
+        jButton1.setBorder(null);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        btt_Izquierda.setBackground(new java.awt.Color(153, 204, 255));
+        btt_Izquierda.setForeground(new java.awt.Color(0, 0, 0));
+        btt_Izquierda.setText("Izquierda");
+        btt_Izquierda.setBorder(null);
+        btt_Izquierda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btt_IzquierdaActionPerformed(evt);
+            }
+        });
+
+        btt_Arriba.setBackground(new java.awt.Color(153, 204, 255));
+        btt_Arriba.setForeground(new java.awt.Color(0, 0, 0));
+        btt_Arriba.setText("Arriba");
+        btt_Arriba.setBorder(null);
+        btt_Arriba.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btt_ArribaActionPerformed(evt);
+            }
+        });
+
+        btt_Abajo.setBackground(new java.awt.Color(153, 204, 255));
+        btt_Abajo.setForeground(new java.awt.Color(0, 0, 0));
+        btt_Abajo.setText("Abajo");
+        btt_Abajo.setBorder(null);
+        btt_Abajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btt_AbajoActionPerformed(evt);
+            }
+        });
+
+        btt_Derecha.setBackground(new java.awt.Color(153, 204, 255));
+        btt_Derecha.setForeground(new java.awt.Color(0, 0, 0));
+        btt_Derecha.setText("Derecha");
+        btt_Derecha.setBorder(null);
+        btt_Derecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btt_DerechaActionPerformed(evt);
+            }
+        });
+
+        btt_Historial.setBackground(new java.awt.Color(153, 204, 255));
+        btt_Historial.setForeground(new java.awt.Color(0, 0, 0));
+        btt_Historial.setText("Historial");
+        btt_Historial.setBorder(null);
+        btt_Historial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btt_HistorialActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setBackground(new java.awt.Color(153, 204, 255));
+        jComboBox1.setForeground(new java.awt.Color(0, 0, 0));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "facil", "Normal", "Dificil" }));
+        jComboBox1.setBorder(null);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btt_Izquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btt_Arriba, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btt_Abajo, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btt_Derecha, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btt_Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btt_Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(btt_Arriba, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btt_Abajo, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btt_Izquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btt_Derecha, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        hiloRepintar = new Thread(() -> {
+            this.mover();
+        });
+        hiloRepintar.start();
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        System.out.println("hola");
+    }//GEN-LAST:event_formKeyPressed
+
+    private void btt_ArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_ArribaActionPerformed
+        this.requestFocus(true);
+        this.direccion = "arr";
+        historial.add("Preciono ARRIBA");
+        //panel.cambiarDireccion("ar");
+    }//GEN-LAST:event_btt_ArribaActionPerformed
+
+    private void btt_AbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_AbajoActionPerformed
+        this.requestFocus(true);
+        historial.add("Preciono ABAJO");
+        this.direccion = "aba";
+    }//GEN-LAST:event_btt_AbajoActionPerformed
+
+    private void btt_DerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_DerechaActionPerformed
+        this.requestFocus(true);
+        historial.add("Preciono DERECHA");
+        this.direccion = "der";
+    }//GEN-LAST:event_btt_DerechaActionPerformed
+
+    private void btt_IzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_IzquierdaActionPerformed
+        this.requestFocus(true);
+        historial.add("Preciono IZQUIERDA");
+        this.direccion = "izq";
+    }//GEN-LAST:event_btt_IzquierdaActionPerformed
+
+    private void btt_HistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btt_HistorialActionPerformed
+        for (String cadena : historial) {
+            System.out.println(cadena);
+        }
+    }//GEN-LAST:event_btt_HistorialActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(panel.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new panel().setVisible(true);
+//            }
+//        });
+//    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btt_Abajo;
+    private javax.swing.JButton btt_Arriba;
+    private javax.swing.JButton btt_Derecha;
+    private javax.swing.JButton btt_Historial;
+    private javax.swing.JButton btt_Izquierda;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JPanel jPanel1;
+    // End of variables declaration//GEN-END:variables
+}
